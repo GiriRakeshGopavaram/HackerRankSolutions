@@ -6,7 +6,12 @@
 package algorithms;
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Scanner;
 
 /**
@@ -41,12 +46,87 @@ public class Solution {
         }
          System.out.println(coinsArray[dollars]);
     }
+    
+    public static int[][] constructSubmatrix(int[][] matrix, int[] rowsToDelete, int[] columnsToDelete) {
+        int[][] subMatrix = new int[matrix.length-rowsToDelete.length][];
+        for(int i = 0;i<matrix.length;i++){
+            for(int j = 0;j<3;i++){
+                for(int k=0;k<rowsToDelete.length;k++){
+                    if(rowsToDelete[k] != i)
+                    for(int l=0;l<columnsToDelete.length;l++){
+                        if(columnsToDelete[l] != j){
+                            //subMatrix[i][j] = matrix[i][j];
+                            System.out.println(matrix[i][j]);
+                        }
+                    }
+                }
+                
+            }
+        }
+            
+        return subMatrix;
+    }
+    public static int[] digitRootSort(int[] a) {
+        Map<Integer, Integer> digital  = new HashMap<>();
+        int[] b = new int[a.length];
+        int minValue, temp = 0;
+        
+        for(int i = 0 ;i < a.length;i++){
+            digital.put(a[i],1+(a[i]-1)%9);
+        }
+        for(int key: digital.keySet()){
+            minValue = Collections.max(digital.entrySet(), (entry1, entry2)-> entry2.getValue() - entry1.getValue()).getValue();
+            
+        }
+
+        return b;
+    }
+    
+    public static int numberOfSolutions(int n){
+        int result = 0;
+        String str = "";
+        for(int a = 0;a <=100;a++){    
+            for(int b = 0; b <=100;b++){
+                double num = (double)a*b;
+                double deno = (double)a+b;
+            }
+        }
+        System.out.println(result);
+        return result;
+    }
+    public static void getTriplet(int[] a, int requiredSum)
+    {
+        Arrays.sort(a);
+        int hi;
+        int lo;
+        for(int i=0; i < a.length-2; i++)
+        {
+            lo = i+1;
+            hi = a.length-1;
+            while(lo<hi) {
+                int actualSum = a[i] + a[hi] + a[lo];
+                int diff = requiredSum-actualSum;
+                if (diff > 0)
+                    lo++;
+                else if(diff<0)
+                    hi--;
+                else {
+                    System.out.println(a[i] + ":" + a[lo] + ":" + a[hi]+" $ "+actualSum);
+                    lo++;
+                    hi--;
+                }
+            }
+        }
+    }
+    
+    
     public static void main(String[] args) {
         // TODO code application logic here
         
+        
         //Graph problem starts here
         
-//        Scanner scan = new Scanner(System.in);
+        
 //        int numQueries = scan.nextInt();
 //        
 //        for (int q = 0; q < numQueries; q++) {
@@ -93,10 +173,10 @@ public class Solution {
         deque.add(start);
         while (!deque.isEmpty()) {
             Node curr = deque.remove();
-            for (Node neighbor : curr.neighbors) {
-                if (neighbor.distance == -1) { // meaning it's unvisited
-                    neighbor.distance = curr.distance + 6;
-                    deque.add(neighbor);
+            for (Node neighbour : curr.neighbours) {
+                if (neighbour.distance == -1) { // meaning it's unvisited
+                    neighbour.distance = curr.distance + 6;
+                    deque.add(neighbour);
                 }
             }
         }
@@ -106,17 +186,17 @@ public class Solution {
     public static class Node {
         public final int     id; // each Node will have a unique ID
         public int           distance; // Also tells us if Node has been visited (-1 means unvisited)
-        public HashSet<Node> neighbors;
+        public HashSet<Node> neighbours;
         
         public Node (int id) {
             this.id   = id;
             distance  = -1;
-            neighbors = new HashSet<>();
+            neighbours = new HashSet<>();
         }
         
-        public void addNeighbor(Node neighbor) {
-            neighbors.add(neighbor);
-            neighbor.neighbors.add(this);
+        public void addNeighbor(Node neighbour) {
+            neighbours.add(neighbour);
+            neighbour.neighbours.add(this);
         }
 
         @Override
