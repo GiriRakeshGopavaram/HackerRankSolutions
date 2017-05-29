@@ -11,8 +11,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Hashtable;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.TreeMap;
 
 /**
  *
@@ -34,6 +37,66 @@ public class Solution {
         for (int num : b) {
             System.out.print(num + " ");
         }
+    }
+    
+    //Balanced brackets:
+    public static boolean isBalanced(String expression) {
+        LinkedList<String> bracket = new LinkedList<>();
+        if (expression.length() % 2 != 0) {
+            return false;
+        }
+        String[] chars = expression.split("");
+        for (String element : chars) {
+            if (element.equals("{")) {
+                bracket.push("}");
+            } else if (element.equals("[")) {
+                bracket.push("]");
+            } else if (element.equals("(")) {
+                bracket.push(")");
+            } else {
+                if (bracket.isEmpty() || !bracket.peek().equals(element)) {
+                    return false;
+                }
+                bracket.pop();
+            }
+        }
+        return bracket.isEmpty();
+    }
+    
+    static int count_palindromes(String S) {
+
+        String[] characters = S.split("");
+        int count = 0;
+        for (int i = 0; i < characters.length; i++) {
+            String original = "";
+            for (int j = i; j < characters.length; j++) {
+                original += characters[j];
+                System.out.println(original);
+                String reversed = new StringBuilder(original).reverse().toString();
+                if (original.equals(reversed)) {
+                    count += 1;
+                }
+            }
+        }
+        return count;
+    }
+    
+    //sumOfTwo
+    public static boolean sumOfTwo(int[] a, int[] b, int v) {
+        Arrays.sort(a);
+        Arrays.sort(b);
+        Hashtable<Integer, Integer> combi = new Hashtable<>();
+        for (int i = 0; i < a.length; i++) {
+            combi.put(a[i], v - a[i]);
+            int x = combi.remove(a[i]);
+            for (int j = 0; j < b.length; j++) {
+                if (x == b[j]) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
     
     public static void coinChange(int dollars, int[] coins) {
@@ -118,8 +181,87 @@ public class Solution {
             }
         }
     }
+    static int[] matrixElementsInSpiralOrder(int[][] matrix) {
+        int[] result = new int[matrix[0].length * matrix[1].length];
+        int r = 0;
+        int c = 0;
+        int ce = matrix[1].length;
+        int re = matrix[0].length;
+        int j = 0;
+        while (r < re && c < ce) {
+            for (int i = c; i < ce; i++) {
+                System.out.println(matrix[r][i]);
+                result[j] = matrix[r][i];
+                j += 1;
+            }
+            r += 1;
+            for (int i = r; i < re - 1; i++) {
+                System.out.println(matrix[i][ce - 1]);
+                result[j] = matrix[r][i];
+                j += 1;
+            }
+            ce -= 1;
+            if (r < re) {
+                for (int i = ce; i >= c; i--) {
+                    System.out.println(matrix[re - 1][i]);
+                    result[j] = matrix[r][i];
+                    j += 1;
+                }
+                re -= 1;
+            }
+            if (c < ce) {
+                for (int i = re - 1; i >= r; i--) {
+                    System.out.println(matrix[i][c]);
+                    result[j] = matrix[r][i];
+                    j += 1;
+                }
+                c += 1;
+            }
+        }
+        return result;
+    }
+
+    
+    //Permutations of a given string
+     public static void permutation(String str) {
+        permutation("", str);
+    }
+    private static void permutation(String prefix, String str) {
+        int n = str.length();
+        if (n == 0) {
+            System.out.println(prefix);
+        } else {
+            for (int i = 0; i < n; i++) {
+                permutation(prefix + str.charAt(i), str.substring(0, i) + str.substring(i + 1, n));
+            }
+        }
+    }
     
     
+    static public String electionWinner(String[] names) {
+        Map<String, Integer> winnerNames = new TreeMap<>(Collections.reverseOrder());
+        int count = 0;
+        int max = 0;
+        //List<String> winnerNames = new ArrayList<>();
+
+        for (String name : names) {
+            if (winnerNames.containsKey(name)) {
+                count = winnerNames.get(name);
+                count += 1;
+                if (count > max) {
+                    max = count;
+                }
+                winnerNames.replace(name, count);
+            } else {
+                count = 1;
+                winnerNames.put(name, count);
+            }
+        }
+        System.out.println("Winner is");
+        System.out.println(Collections.max(winnerNames.entrySet(), Map.Entry.comparingByValue()).getKey());
+        System.out.println(Collections.max(winnerNames.entrySet(), Map.Entry.comparingByValue()).getValue());
+        return "";
+    }
     public static void main(String[] args) {
         // TODO code application logic here
         
